@@ -107,7 +107,6 @@ cc_defaults {
         "libc",
         "libcrypto",
         "libcutils",
-        "libkeystore-engine-wifi-hidl",
         "liblog",
         "libnl",
         "libssl",
@@ -677,7 +676,6 @@ cc_library {
         "liblog",
         "libcrypto",
         "libssl",
-        "libkeystore-engine-wifi-hidl",
     ],
     sanitize: {
         misc_undefined: [
@@ -1321,7 +1319,6 @@ wpa_supplicant_cc_binary {
         "libc",
         "libcrypto",
         "libcutils",
-        "libkeystore-engine-wifi-hidl",
         "liblog",
         "libnl",
         "libssl",
@@ -1370,7 +1367,6 @@ wpa_supplicant_cc_binary {
         "libc",
         "libcrypto",
         "libcutils",
-        "libkeystore-engine-wifi-hidl",
         "liblog",
         "libnl",
         "libssl",
@@ -1540,4 +1536,27 @@ prebuilt_etc {
     name: "com.android.hardware.wpa_supplicant.rc",
     src: ":com.android.hardware.wpa_supplicant.rc-gen",
     installable: false,
+}
+
+// TWRP recovery wpa_supplicant: no AIDL/binder, plain Unix socket ctrl_interface.
+cc_binary {
+    name: "wpa_supplicant_recovery",
+    stem: "wpa_supplicant",
+    recovery: true,
+    defaults: [
+        "wpa_supplicant_srcs_default",
+        "wpa_supplicant_no_aidl_cflags_default",
+        "wpa_supplicant_includes_default",
+    ],
+    srcs: ["src/crypto/evp_pkey_stub_recovery.c"],
+    shared_libs: [
+        "libcrypto",
+        "libssl",
+        "libcutils",
+        "liblog",
+        "libnl",
+        "libutils",
+        "libbase",
+        "libc++",
+    ],
 }
